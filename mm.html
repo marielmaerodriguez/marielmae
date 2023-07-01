@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Existing styles */
+
+    h1 {
+      text-align: center;
+      color: #A4BC92;
+    }
+    .nameDisplay {
+      text-align: center;
+      font-size: 18px;
+      color: #A4BC92;
+      margin-bottom: 20px;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.5s ease;
+    }
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 20px;
+      background-color: #DDFFBB;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #A4BC92;
+    }
+    .button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      background-color: #A4BC92;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #A4BC92;
+    }
+    .question {
+      display: none;
+    }
+    .label {
+      display: block;
+      margin-top: 20px;
+      color: #A4BC92;
+    }
+    .input-text {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #A4BC92;
+      border-radius: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    @media (max-width: 480px) {
+      .container {
+        margin: 50px auto;
+        padding: 10px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      .nameDisplay {
+        font-size: 16px;
+      }
+      h2 {
+        font-size: 18px;
+      }
+      .button {
+        font-size: 14px;
+      }
+      .label {
+        font-size: 14px;
+      }
+      .input-text {
+        font-size: 14px;
+      }
+    }
+
+    /* Additional styles */
+
+    /* Background gradient */
+    body {
+      background-image: linear-gradient(to bottom, #E1ECC8);
+    }
+
+    /* Center the container vertically */
+    html, body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Adjust container margin */
+    .container {
+      margin: 50px auto;
+    }
+
+    /* Update button hover effect */
+    .button:hover {
+      background-color: #AACB73;
+    }
+
+    /* Style the input field */
+    .input-text {
+      margin-top: 10px;
+      border: 1px solid #E384FF;
+    }
+
+    /* Additional styles */
+    .button.transparent {
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body onload="showName()">
+  <div class="container">
+    <div class="nameDisplay"></div>
+    <h2>Do you like me?</h2>
+    <button class="button" onclick="showQuestion()">Yes</button>
+    <button class="button" onclick="redirectToSadPage()" id="noButton">No</button>
+    <div class="question">
+      <label class="label" for="reason">Ngano man?</label>
+      <input type="text" class="input-text" id="reason" name="reason">
+      <button class="button" onclick="sendReason()">Send</button>
+    </div>
+  </div>
+  <script>
+    function showQuestion() {
+      document.querySelector(".question").style.display = "block";
+      document.getElementById("noButton").classList.add("transparent");
+    }
+    function sendReason() {
+      var reason = document.getElementById("reason").value;
+      var name = localStorage.getItem("name");
+      var scriptUrl = "https://script.google.com/macros/s/AKfycbwxeGJV0KzLI9xyrb_i8T4DwM7FVvDP5lzu13YVfKApMYUm8ve--E7_wGd1xsWRcxZD9w/exec";
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", scriptUrl, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            alert("Na send Nah!");
+          } else {
+            alert("Wala pa na send. Please try again.");
+          }
+        }
+      };
+      xhr.send("name=" + encodeURIComponent(name) + "&reason=" + encodeURIComponent(reason));
+    }
+    function showName() {
+      var name = localStorage.getItem("name");
+      document.querySelector(".nameDisplay").textContent = "Name: " + name;
+    }
+    function redirectToSadPage() {
+      window.location.href = "sad.html";
+    }
+
+    // Color changing background
+    var colors = ["#E1ECC8"];
+    var currentIndex = 0;
+    function changeBackgroundColor() {
+      var body = document.querySelector("body");
+      body.style.backgroundColor = colors[currentIndex];
+      currentIndex = (currentIndex + 1) % colors.length;
+    }
+    setInterval(changeBackgroundColor, 1000); // Change color every 1 second
+  </script>
+</body>
+</html>
